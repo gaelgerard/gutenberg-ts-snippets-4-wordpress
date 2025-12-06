@@ -5,9 +5,9 @@ A collection of TypeScript snippets for Gutenberg, the WordPress block editor. I
 ## Snippets
 
 - **blockRenderer.tsx** – Render Gutenberg blocks from JSON or attributes.
-- **useBlockPropsExample.tsx** – Example of using typed `useBlockProps`.
-- **innerBlocksRenderer.tsx** – Render nested InnerBlocks dynamically.
-- **types/gutenberg.d.ts** – Common TypeScript types for blocks.
+- **useBlockPropsExample.tsx** – *Example of using typed `useBlockProps`. ⚠️ in progress*
+- **innerBlocksRenderer.tsx** – *Render nested InnerBlocks dynamically. ⚠️ in progress*
+- **types/gutenberg.d.ts** – *Common TypeScript types for blocks. ⚠️ in progress*
 
 ## Usage
 
