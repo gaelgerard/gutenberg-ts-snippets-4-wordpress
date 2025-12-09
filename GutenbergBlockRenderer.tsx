@@ -84,11 +84,41 @@ const GutenbergBlockRenderer: React.FC<GutenbergBlockRendererProps> = ({ blocks 
                 const listClass = attrs.ordered
                     ? 'list-decimal list-inside mb-4 space-y-2 text-gray-700'
                     : 'list-disc list-inside mb-4 space-y-2 text-gray-700';
+
+                // Si innerHTML contient déjà les <li>, on l'utilise directement
+                if (innerHTML && innerHTML.trim() && !innerBlocks.length) {
+                    return (
+                        <ListTag
+                            key={index}
+                            className={listClass}
+                            dangerouslySetInnerHTML={{ __html: innerHTML }}
+                        />
+                    );
+                }
+
+                // Sinon, on utilise les innerBlocks
                 return (
                     <ListTag
                         key={index}
                         className={listClass}
-                        dangerouslySetInnerHTML={{ __html: innerHTML }}
+                    >
+                        {innerBlocks.map((innerBlock, innerIndex) =>
+                            renderBlock(innerBlock, innerIndex)
+                        )}
+                    </ListTag>
+                );
+
+            case 'core/list-item':
+                // WordPress retourne déjà l'innerHTML avec les balises <li>
+                // On doit extraire le contenu interne pour éviter la double imbrication
+                const liMatch = innerHTML.match(/<li[^>]*>([\s\S]*?)<\/li>/);
+                const liContent = liMatch ? liMatch[1] : innerHTML;
+
+                return (
+                    <li
+                        key={index}
+                        className="text-gray-700"
+                        dangerouslySetInnerHTML={{ __html: liContent }}
                     />
                 );
 
@@ -160,8 +190,8 @@ const GutenbergBlockRenderer: React.FC<GutenbergBlockRendererProps> = ({ blocks 
                                 src={url}
                                 alt={alt}
                                 className={`rounded-lg ${block.attrs.align
-                                        ? `mx-${block.attrs.align === "center" ? "auto" : block.attrs.align}`
-                                        : ""
+                                    ? `mx-${block.attrs.align === "center" ? "auto" : block.attrs.align}`
+                                    : ""
                                     } ${block.attrs.className ?? ""}`}
                                 width={width}
                                 height={height}
